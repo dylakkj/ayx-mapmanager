@@ -1,10 +1,9 @@
 local resourceName = GetCurrentResourceName()
-local githubRepo = "dylakkj/ayx-mapmanager"
+local githubRepo = "dylakkj/ayx-mapmanager" 
 local githubBranch = "main"
-
--- Arquivos estão na RAIZ do repositório
 local githubRawUrl = "https://raw.githubusercontent.com/" .. githubRepo .. "/" .. githubBranch .. "/"
 
+local needsRestart = false
 local updateFiles = {
     "fxmanifest.lua",
     "version.lua",
@@ -41,7 +40,6 @@ function updateResource(newVersion)
     local downloadedData = {}
     local filesFinished = 0
 
-    -- 1. Baixa TUDO para a memória primeiro (evita crash de IO parcial/corrupção)
     for _, fileName in ipairs(updateFiles) do
         PerformHttpRequest(githubRawUrl .. fileName, function(errorCode, resultData)
             if errorCode == 200 then
@@ -49,19 +47,16 @@ function updateResource(newVersion)
                 filesFinished = filesFinished + 1
                 
                 if filesFinished == #updateFiles then
-                    -- 2. Salva todos de uma vez (IO rápido sincronizado)
                     for file, content in pairs(downloadedData) do
                         SaveResourceFile(resourceName, file, content, -1)
                         print("^5[" .. resourceName .. "] Arquivo salvo: " .. file .. "^7")
                     end
                     
                     print("^2[" .. resourceName .. "] Todos os arquivos foram atualizados!^7")
-                    -- 3. Delay generoso (15s) para o Sistema Operacional liberar os locks de arquivo
-                    print("^3[" .. resourceName .. "] O script será reiniciado em 15 segundos. POR FAVOR, NÃO MEXA NO CONSOLE.^7")
+                    print("^3[" .. resourceName .. "] O script será reiniciado em 15 segundos automaticamente.^7")
                     
                     SetTimeout(15000, function()
-                        print("^1[" .. resourceName .. "] REINICIANDO AGORA...^7")
-                        ExecuteCommand("ensure " .. resourceName)
+                        needsRestart = true
                     end)
                 end
             else
@@ -71,10 +66,20 @@ function updateResource(newVersion)
     end
 end
 
--- Inicia a verificação ao carregar o servidor
+-- Thread exclusiva para gerenciar o reinício (Evita crash SIGSEGV por callback nativo)
 CreateThread(function()
-    Wait(15000) -- Aguarda 15 segundos para o servidor estabilizar totalmente
-    checkVersion()
+    while true do
+        Wait(1000)
+        if needsRestart then
+            needsRestart = false
+            print("^1[" .. resourceName .. "] COMANDO DE REINÍCIO ENVIADO...^7")
+            ExecuteCommand("restart " .. resourceName)
+        end
+    end
 end)
 
---teste
+-- Inicia a verificação ao carregar o servidor
+CreateThread(function()
+    Wait(15000)
+    checkVersion()
+end)
