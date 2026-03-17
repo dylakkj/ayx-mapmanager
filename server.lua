@@ -54,13 +54,16 @@ function updateResource(newVersion)
                     
                     print("^2[" .. resourceName .. "] Todos os arquivos foram atualizados!^7")
                     
-                    -- Thread para enviar 5 notificações ao servidor
+                    -- Thread para enviar 5 alertas no console CMD
                     CreateThread(function()
                         for i = 1, 5 do
-                            TriggerClientEvent("Notify", -1, "Atualização", "O script <b>" .. resourceName .. "</b> foi atualizado para v" .. newVersion .. ".<br>Por favor, reinicie o servidor para carregar a nova source.", "verde", 10000)
-                            print("^3[" .. resourceName .. "] Notificação " .. i .. "/5 enviada aos jogadores.^7")
+                            print("^1[" .. resourceName .. "] =========================================================^7")
+                            print("^1[" .. resourceName .. "] ATUALIZAÇÃO v" .. newVersion .. " APLICADA!^7")
+                            print("^1[" .. resourceName .. "] FAVOR REINICIAR O SERVIDOR PARA CARREGAR A NOVA SOURCE.^7")
+                            print("^1[" .. resourceName .. "] =========================================================^7")
+                            
                             if i < 5 then
-                                Wait(60000) -- Espera 1 minuto entre as notificações (ou ajuste conforme necessário)
+                                Wait(60000) -- Intervalo de 1 minuto entre os alertas no console
                             end
                         end
                     end)
