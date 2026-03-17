@@ -1,7 +1,7 @@
 local resourceName = GetCurrentResourceName()
 local githubRepo = "dylakkj/ayx-mapmanager" -- EXEMPLO: Troque pelo seu repo real
 local githubBranch = "main"
-local githubRawUrl = "https://raw.githubusercontent.com/" .. githubRepo .. "/" .. githubBranch .. "/" .. resourceName .. "/"
+local githubRawUrl = "https://raw.githubusercontent.com/" .. githubRepo .. "/" .. githubBranch .. "/"
 
 -- Arquivos que serão atualizados
 local updateFiles = {
@@ -64,5 +64,4 @@ CreateThread(function()
     checkVersion()
 end)
 
-
-tee
+teste
