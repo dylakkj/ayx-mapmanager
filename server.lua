@@ -60,7 +60,7 @@ function updateResource(newVersion)
                             print("^1[" .. resourceName .. "] Novas atualizações aplicadas reinicie o servidor para aplica-las.^7")
                             
                             if i < 5 then
-                                Wait(60000) -- Intervalo de 1 minuto entre os alertas no console
+                                Wait(1000) -- Intervalo de 1 minuto entre os alertas no console
                             end
                         end
                     end)
