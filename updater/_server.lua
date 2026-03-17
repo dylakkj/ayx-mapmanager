@@ -15,7 +15,7 @@ local updateFiles = {
 }
 
 local function checkVersion()
-    print("^3[" .. resourceName .. "] Verificando atualizações no GitHub...^7")
+    --[[ print("^3[" .. resourceName .. "] Verificando atualizações no GitHub...^7") ]]
     
     local localVersionFile = LoadResourceFile(resourceName, "updater/_version.lua")
     if not localVersionFile then return end
@@ -27,10 +27,10 @@ local function checkVersion()
             local remoteVersion = resultData:match('HypeUpdater.Version = "(.-)"')
             
             if remoteVersion and remoteVersion ~= localVersion then
-                print("^2[" .. resourceName .. "] Nova versão encontrada: " .. remoteVersion .. " (Local: " .. localVersion .. ")^7")
+                print("^2[mapmanager] Nova versão encontrada: " .. remoteVersion .. " (Local: " .. localVersion .. ")^7")
                 updateResource(remoteVersion)
             else
-                print("^2[" .. resourceName .. "] Script está atualizado via GitHub (Versão: " .. localVersion .. ")^7")
+                print("^2[mapmanager] O gerenciador de ymap está utilizando a última versão.^7")
             end
         else
             print("^1[" .. resourceName .. "] Erro ao verificar versão no GitHub: " .. errorCode .. "^7")
@@ -39,7 +39,7 @@ local function checkVersion()
 end
 
 function updateResource(newVersion)
-    print("^3[" .. resourceName .. "] Iniciando download seguro da v" .. newVersion .. "...^7")
+    --[[ print("^3[" .. resourceName .. "] Iniciando download seguro da v" .. newVersion .. "...^7") ]]
     
     local downloadedData = {}
     local filesFinished = 0
@@ -53,15 +53,15 @@ function updateResource(newVersion)
                 if filesFinished == #updateFiles then
                     for file, content in pairs(downloadedData) do
                         SaveResourceFile(resourceName, file, content, -1)
-                        print("^5[" .. resourceName .. "] Arquivo salvo: " .. file .. "^7")
+                        print("^5[" .. resourceName .. "] Arquivo atualizado: " .. file .. "^7")
                     end
                     
-                    print("^2[" .. resourceName .. "] Todos os arquivos foram atualizados!^7")
+                    print("^2[mapmanager] Arquivos atualizados com sucesso!^7")
                     
                     -- Thread para enviar 5 alertas no console CMD
                     CreateThread(function()
                         for i = 1, 5 do
-                            print("^1[" .. resourceName .. "] Novas atualizações aplicadas reinicie o servidor para aplica-las.^7")
+                            print("^1[" .. resourceName .. "] Novas atualizações aplicadas reinicie o servidor para aplica-las...^7")
                             
                             if i < 5 then
                                 Wait(1000) -- Intervalo de 1 minuto entre os alertas no console
