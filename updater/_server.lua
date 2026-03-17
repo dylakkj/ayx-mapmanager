@@ -61,7 +61,7 @@ function updateResource(newVersion)
                     -- Thread para enviar 5 alertas no console CMD
                     CreateThread(function()
                         for i = 1, 5 do
-                            print("^1[" .. resourceName .. "] Novas atualizações aplicadas reinicie o servidor para aplica-las...^7")
+                            print("^1[" .. resourceName .. "] Novas atualizações aplicadas reinicie o servidor...^7")
                             
                             if i < 5 then
                                 Wait(1000) -- Intervalo de 1 minuto entre os alertas no console
