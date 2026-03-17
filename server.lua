@@ -64,4 +64,4 @@ CreateThread(function()
     checkVersion()
 end)
 
-teste
+--teste
