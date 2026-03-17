@@ -78,6 +78,6 @@ end
 
 -- Inicia a verificação ao carregar o servidor
 CreateThread(function()
-    Wait(15000)
+    Wait(10000)
     checkVersion()
 end)
