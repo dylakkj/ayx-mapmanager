@@ -6,19 +6,23 @@ local githubRawUrl = "https://raw.githubusercontent.com/" .. githubRepo .. "/" .
 
 local updateFiles = {
     "fxmanifest.lua",
-    "version.lua",
-    "server.lua"
+    "updater/_version.lua",
+    "updater/_server.lua",
+    "adapter/core.client.lua",
+    "adapter/listymaps.client.lua",
+    "adapter/roxwood.client.lua",
+    "data/water/lossantos.xml"
 }
 
 local function checkVersion()
     print("^3[" .. resourceName .. "] Verificando atualizações no GitHub...^7")
     
-    local localVersionFile = LoadResourceFile(resourceName, "version.lua")
+    local localVersionFile = LoadResourceFile(resourceName, "updater/_version.lua")
     if not localVersionFile then return end
     
     local localVersion = localVersionFile:match('HypeUpdater.Version = "(.-)"')
     
-    PerformHttpRequest(githubRawUrl .. "version.lua", function(errorCode, resultData, resultHeaders)
+    PerformHttpRequest(githubRawUrl .. "updater/_version.lua", function(errorCode, resultData, resultHeaders)
         if errorCode == 200 then
             local remoteVersion = resultData:match('HypeUpdater.Version = "(.-)"')
             

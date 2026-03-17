@@ -1,10 +1,28 @@
-fx_version "bodacious"
-game "gta5"
+fx_version 'cerulean'
+game 'gta5'
 
-description "Hype RP Auto Updater"
-version "1.0.1"
+lua54 'yes'
+
+client_scripts {
+    '@PolyZone/client.lua',
+    '@PolyZone/BoxZone.lua',
+    '@PolyZone/EntityZone.lua',
+    '@PolyZone/CircleZone.lua',
+    '@PolyZone/ComboZone.lua',
+
+    'adapter/listymaps.client.lua',
+    'adapter/core.client.lua',
+    'adapter/roxwood.client.lua'
+}
 
 server_scripts {
-    "version.lua",
-    "server.lua"
+    "updater/_version.lua",
+    "updater/_server.lua"
 }
+
+files {
+    'data/*.xml',
+    'data/**/*'
+}
+
+use_experimental_fxv2_oal 'yes'
