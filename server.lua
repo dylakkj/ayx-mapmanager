@@ -63,3 +63,6 @@ CreateThread(function()
     Wait(5000) -- Aguarda um pouco para o servidor estabilizar
     checkVersion()
 end)
+
+
+tee
