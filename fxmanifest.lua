@@ -30,4 +30,3 @@ escrow_ignore {
 }
 
 use_experimental_fxv2_oal 'yes'
-dependency '/assetpacks'
