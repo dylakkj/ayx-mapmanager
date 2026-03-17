@@ -3,7 +3,7 @@ local githubRepo = "dylakkj/ayx-mapmanager"
 local githubBranch = "main"
 local githubRawUrl = "https://raw.githubusercontent.com/" .. githubRepo .. "/" .. githubBranch .. "/"
 
-local needsRestart = false
+
 local updateFiles = {
     "fxmanifest.lua",
     "version.lua",
@@ -48,42 +48,29 @@ function updateResource(newVersion)
                 
                 if filesFinished == #updateFiles then
                     for file, content in pairs(downloadedData) do
-                        SaveResourceFile(resourceName, file, content, #content)
+                        SaveResourceFile(resourceName, file, content, -1)
                         print("^5[" .. resourceName .. "] Arquivo salvo: " .. file .. "^7")
                     end
                     
-                     print("^2[" .. resourceName .. "] Todos os arquivos foram atualizados!^7")
-                     print("^3[" .. resourceName .. "] O script será reiniciado em 15 segundos. POR FAVOR, NÃO MEXA NO CONSOLE.^7")
-                     
-                     SetTimeout(15000, function()
-                         needsRestart = true
-                     end)
-                 end
-             else
-                 print("^1[" .. resourceName .. "] Erro crítico ao baixar " .. fileName .. " (Abortando atualização)^7")
-             end
-         end, "GET")
-     end
- end
- 
- -- Thread exclusiva para gerenciar o reinício (Evita crash SIGSEGV por callback nativo)
- CreateThread(function()
-     while true do
-         Wait(1000)
-         if needsRestart then
-             needsRestart = false
-             print("^1[" .. resourceName .. "] =========================================================^7")
-             print("^1[" .. resourceName .. "] REINICIANDO AGORA...^7")
-             print("^1[" .. resourceName .. "] =========================================================^7")
-             
-             -- Força a limpeza de memória antes do reinício
-             collectgarbage()
-             Wait(500)
-             
-             ExecuteCommand("restart " .. resourceName)
-         end
-     end
- end)
+                    print("^2[" .. resourceName .. "] Todos os arquivos foram atualizados!^7")
+                    
+                    -- Thread para enviar 5 notificações ao servidor
+                    CreateThread(function()
+                        for i = 1, 5 do
+                            TriggerClientEvent("Notify", -1, "Atualização", "O script <b>" .. resourceName .. "</b> foi atualizado para v" .. newVersion .. ".<br>Por favor, reinicie o servidor para carregar a nova source.", "verde", 10000)
+                            print("^3[" .. resourceName .. "] Notificação " .. i .. "/5 enviada aos jogadores.^7")
+                            if i < 5 then
+                                Wait(60000) -- Espera 1 minuto entre as notificações (ou ajuste conforme necessário)
+                            end
+                        end
+                    end)
+                end
+            else
+                print("^1[" .. resourceName .. "] Erro crítico ao baixar " .. fileName .. " (Abortando atualização)^7")
+            end
+        end, "GET")
+    end
+end
 
 -- Inicia a verificação ao carregar o servidor
 CreateThread(function()
