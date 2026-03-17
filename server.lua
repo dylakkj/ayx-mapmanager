@@ -48,35 +48,42 @@ function updateResource(newVersion)
                 
                 if filesFinished == #updateFiles then
                     for file, content in pairs(downloadedData) do
-                        SaveResourceFile(resourceName, file, content, -1)
+                        SaveResourceFile(resourceName, file, content, #content)
                         print("^5[" .. resourceName .. "] Arquivo salvo: " .. file .. "^7")
                     end
                     
-                    print("^2[" .. resourceName .. "] Todos os arquivos foram atualizados!^7")
-                    print("^3[" .. resourceName .. "] O script será reiniciado em 15 segundos automaticamente.^7")
-                    
-                    SetTimeout(15000, function()
-                        needsRestart = true
-                    end)
-                end
-            else
-                print("^1[" .. resourceName .. "] Erro crítico ao baixar " .. fileName .. " (Abortando atualização)^7")
-            end
-        end, "GET")
-    end
-end
-
--- Thread exclusiva para gerenciar o reinício (Evita crash SIGSEGV por callback nativo)
-CreateThread(function()
-    while true do
-        Wait(1000)
-        if needsRestart then
-            needsRestart = false
-            print("^1[" .. resourceName .. "] COMANDO DE REINÍCIO ENVIADO...^7")
-            ExecuteCommand("restart " .. resourceName)
-        end
-    end
-end)
+                     print("^2[" .. resourceName .. "] Todos os arquivos foram atualizados!^7")
+                     print("^3[" .. resourceName .. "] O script será reiniciado em 15 segundos. POR FAVOR, NÃO MEXA NO CONSOLE.^7")
+                     
+                     SetTimeout(15000, function()
+                         needsRestart = true
+                     end)
+                 end
+             else
+                 print("^1[" .. resourceName .. "] Erro crítico ao baixar " .. fileName .. " (Abortando atualização)^7")
+             end
+         end, "GET")
+     end
+ end
+ 
+ -- Thread exclusiva para gerenciar o reinício (Evita crash SIGSEGV por callback nativo)
+ CreateThread(function()
+     while true do
+         Wait(1000)
+         if needsRestart then
+             needsRestart = false
+             print("^1[" .. resourceName .. "] =========================================================^7")
+             print("^1[" .. resourceName .. "] REINICIANDO AGORA...^7")
+             print("^1[" .. resourceName .. "] =========================================================^7")
+             
+             -- Força a limpeza de memória antes do reinício
+             collectgarbage()
+             Wait(500)
+             
+             ExecuteCommand("restart " .. resourceName)
+         end
+     end
+ end)
 
 -- Inicia a verificação ao carregar o servidor
 CreateThread(function()
