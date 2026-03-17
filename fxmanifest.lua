@@ -8,7 +8,3 @@ server_scripts {
     "version.lua",
     "server.lua"
 }
-
-dependencies {
-    "vrp"
-}
