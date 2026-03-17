@@ -30,7 +30,7 @@ local function checkVersion()
                 print("^2[mapmanager] Nova versão encontrada: " .. remoteVersion .. " (Local: " .. localVersion .. ")^7")
                 updateResource(remoteVersion)
             else
-                print("^2[mapmanager] O gerenciador de ymap está utilizando a última versão.^7")
+                print("^2[mapmanager] O mapmanager está utilizando a última versão.^7")
             end
         else
             print("^1[" .. resourceName .. "] Erro ao verificar versão no GitHub: " .. errorCode .. "^7")
