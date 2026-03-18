@@ -1,1 +1,83 @@
-local v0=GetCurrentResourceName();local v1="dylakkj/ayx-mapmanager";local v2="main";local v3="https://raw.githubusercontent.com/"   .. v1   .. "/"   .. v2   .. "/" ;local v4={"fxmanifest.lua","updater/_version.lua","updater/_server.lua","adapter/core.client.lua","adapter/listymaps.client.lua","adapter/roxwood.client.lua","data/water/lossantos.xml"};local function v5() local v6=LoadResourceFile(v0,"updater/_version.lua");if  not v6 then return;end local v7=v6:match('HypeUpdater.Version = "(.-)"');PerformHttpRequest(v3   .. "updater/_version.lua" ,function(v13,v14,v15) if (v13==(1837 -(1523 + 114))) then local v16=0;local v17;while true do if (v16==(0 + 0)) then v17=v14:match('HypeUpdater.Version = "(.-)"');if (v17 and (v17~=v7)) then local v23=0 -0 ;while true do if (v23==(1065 -(68 + 997))) then print("^2[mapmanager] Nova versão encontrada: "   .. v17   .. " (Local: "   .. v7   .. ")^7" );updateResource(v17);break;end end else print("^2[mapmanager] O mapmanager está utilizando a última versão.^7");end break;end end else print("^1["   .. v0   .. "] Erro ao verificar versão no GitHub: "   .. v13   .. "^7" );end end,"GET");end function updateResource(v8) local v9=1270 -(226 + 1044) ;local v10;local v11;while true do if (v9==(4 -3)) then for v18,v19 in ipairs(v4) do PerformHttpRequest(v3   .. v19 ,function(v20,v21) if (v20==(317 -(32 + 85))) then v10[v19]=v21;v11=v11 + 1 ;if (v11== #v4) then for v24,v25 in pairs(v10) do SaveResourceFile(v0,v24,v25, -(1 + 0));print("^5["   .. v0   .. "] Arquivo atualizado: "   .. v24   .. "^7" );end print("^2[mapmanager] Arquivos atualizados com sucesso!^7");CreateThread(function() for v26=1 + 0 ,962 -(892 + 65)  do local v27=0 -0 ;while true do if (v27==(0 -0)) then print("^1["   .. v0   .. "] Novas atualizações aplicadas reinicie o servidor...^7" );if (v26<(8 -3)) then Wait(1000);end break;end end end end);end else print("^1["   .. v0   .. "] Erro crítico ao baixar "   .. v19   .. " (Abortando atualização)^7" );end end,"GET");end break;end if (v9==(350 -(87 + 263))) then v10={};v11=180 -(67 + 113) ;v9=1 + 0 ;end end end CreateThread(function() local v12=0 -0 ;while true do if (v12==(0 + 0)) then Wait(39744 -29744 );v5();break;end end end);
+local resourceName = GetCurrentResourceName()
+local githubRepo = "dylakkj/ayx-mapmanager" 
+local githubBranch = "main"
+local githubRawUrl = "https://raw.githubusercontent.com/" .. githubRepo .. "/" .. githubBranch .. "/"
+
+
+local updateFiles = {
+    "fxmanifest.lua",
+    "updater/_version.lua",
+    "updater/_server.lua",
+    "adapter/core.client.lua",
+    "adapter/listymaps.client.lua",
+    "adapter/roxwood.client.lua",
+    "data/water/lossantos.xml"
+}
+
+local function checkVersion()
+    --[[ print("^3[mapmanager] Verificando atualizações no GitHub...^7") ]]
+    
+    local localVersionFile = LoadResourceFile(resourceName, "updater/_version.lua")
+    if not localVersionFile then return end
+    
+    local localVersion = localVersionFile:match('HypeUpdater.Version = "(.-)"')
+    
+    PerformHttpRequest(githubRawUrl .. "updater/_version.lua", function(errorCode, resultData, resultHeaders)
+        if errorCode == 200 then
+            local remoteVersion = resultData:match('HypeUpdater.Version = "(.-)"')
+            
+            if remoteVersion and remoteVersion ~= localVersion then
+                print("^2[mapmanager] Nova versão encontrada: " .. remoteVersion .. " (Local: " .. localVersion .. ")^7")
+                updateResource(remoteVersion)
+            else
+                print("^2[mapmanager] O mapmanager está utilizando a última versão.^7")
+            end
+        else
+            print("^1[mapmanager] Erro ao verificar versão no GitHub: " .. errorCode .. "^7")
+        end
+    end, "GET")
+end
+
+function updateResource(newVersion)
+    --[[ print("^3[mapmanager] Iniciando download seguro da v" .. newVersion .. "...^7") ]]
+    
+    local downloadedData = {}
+    local filesFinished = 0
+
+    for _, fileName in ipairs(updateFiles) do
+        PerformHttpRequest(githubRawUrl .. fileName, function(errorCode, resultData)
+            if errorCode == 200 then
+                downloadedData[fileName] = resultData
+                filesFinished = filesFinished + 1
+                
+                if filesFinished == #updateFiles then
+                    for file, content in pairs(downloadedData) do
+                        SaveResourceFile(resourceName, file, content, -1)
+                        print("^5[mapmanager] Arquivo atualizado: " .. file .. "^7")
+                    end
+                    
+                    print("^2[mapmanager] Arquivos atualizados com sucesso!^7")
+                    
+                    -- Thread para enviar 5 alertas no console CMD
+                    CreateThread(function()
+                        for i = 1, 5 do
+                            print("^1[mapmanager] Novas atualizações aplicadas reinicie o servidor...^7")
+                            
+                            if i < 5 then
+                                Wait(1000) -- Intervalo de 1 minuto entre os alertas no console
+                            end
+                        end
+                    end)
+                end
+            else
+                print("^1[mapmanager] Erro crítico ao baixar " .. fileName .. " (Abortando atualização)^7")
+            end
+        end, "GET")
+    end
+end
+
+-- Inicia a verificação ao carregar o servidor
+CreateThread(function()
+    Wait(10000)
+    checkVersion()
+end)
