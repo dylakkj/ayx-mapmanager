@@ -25,8 +25,4 @@ files {
     'data/**/*'
 }
 
-escrow_ignore {
-    "updater/_version.lua",
-}
-
 use_experimental_fxv2_oal 'yes'
