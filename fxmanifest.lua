@@ -11,8 +11,7 @@ client_scripts {
     '@PolyZone/ComboZone.lua',
 
     'adapter/ymaps.client.lua',
-    'adapter/core.client.lua',
-    'adapter/roxwood.client.lua'
+    'adapter/core.client.lua'
 }
 
 server_scripts {
