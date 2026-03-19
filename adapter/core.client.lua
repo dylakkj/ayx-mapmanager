@@ -184,11 +184,11 @@ function onEnableNy(value)
 			onEnterEnableIpl({ipl = ymap.name})
 		end
 
-		SetWaterAreaClipRect(2200, -6300, 8200, -300)
-		Wait(50)
-		LoadWaterFromPath("mapmanager", "data/water/newyork.xml")
-		Wait(300)
-		SetTimecycleModifier("lightpolutionLC")
+		--[[ SetWaterAreaClipRect(2200, -6300, 8200, -300) ]]
+		--[[ Wait(50) ]]
+		--[[ LoadWaterFromPath("mapmanager", "data/water/newyork.xml") ]]
+		--[[ Wait(300) ]]
+		--[[ SetTimecycleModifier("lightpolutionLC") ]]
 
 		Citizen.CreateThread(function()
             local currentSession = GetGameTimer()
@@ -209,11 +209,11 @@ function onEnableNy(value)
 			onEnterEnableIpl({ipl = ymap.name})
 		end
 
-		SetWaterAreaClipRect(-4000, -4000, 4500, 8000)
-		Wait(50)
-		LoadWaterFromPath("mapmanager", "data/water/water.xml")
-		Wait(300)
-		ClearTimecycleModifier()
+		--[[ SetWaterAreaClipRect(-4000, -4000, 4500, 8000) ]]
+		--[[ Wait(50) ]]
+		--[[ LoadWaterFromPath("mapmanager", "data/water/water.xml") ]]
+		--[[ Wait(300) ]]
+		--[[ ClearTimecycleModifier() ]]
 
 		npcSpawnBlocked = true
 	end
