@@ -1,115 +1,12 @@
------------------------------------------------------------------------------------------------------------------------------------------
--- VRP
------------------------------------------------------------------------------------------------------------------------------------------
-local Tunnel = module("vrp","lib/Tunnel")
-local Proxy = module("vrp","lib/Proxy")
-local vRP = Proxy.getInterface("vRP")
+--[[
+ .____                  ________ ___.    _____                           __                
+ |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
+ |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
+ |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
+ |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
+         \/          \/         \/    \/                \/     \/     \/                   
+          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
 
------------------------------------------------------------------------------------------------------------------------------------------
--- VARIABLES
------------------------------------------------------------------------------------------------------------------------------------------
--- Load state from KVP "database"
-local isLibertyActive = GetResourceKvpString("libertyCityActive") == "true"
-GlobalState.libertyCityActive = isLibertyActive
+]]--
 
------------------------------------------------------------------------------------------------------------------------------------------
--- CONFIGURAÇÃO DE BUCKETS (PERMANENTE E DINÂMICA)
------------------------------------------------------------------------------------------------------------------------------------------
-local defaultBuckets = {
-    [200] = true,
-    [201] = true
-}
-
-local dynamicBuckets = {}
-
------------------------------------------------------------------------------------------------------------------------------------------
--- BUCKET SYSTEM
------------------------------------------------------------------------------------------------------------------------------------------
-Citizen.CreateThread(function()
-    while true do
-        Wait(1000)
-        local players = GetPlayers()
-        for _, playerId in ipairs(players) do
-            local bucket = GetPlayerRoutingBucket(playerId)
-            local isActive = nil
-            
-            if dynamicBuckets[bucket] ~= nil then
-                isActive = dynamicBuckets[bucket]
-            elseif defaultBuckets[bucket] ~= nil then
-                isActive = defaultBuckets[bucket]
-            end
-            
-            if Player(playerId).state.libertyCityActiveBucket ~= isActive then
-                Player(playerId).state.libertyCityActiveBucket = isActive
-            end
-        end
-    end
-end)
-
------------------------------------------------------------------------------------------------------------------------------------------
--- ATIVAR LIBERTY
------------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("loadny", function(source, args, rawCommand)
-    local user_id = vRP.getUserId(source)
-    local bucketArg = tonumber(args[1])
-    
-    if user_id then
-        if vRP.hasPermission(user_id, "admin.permissao") or vRP.hasPermission(user_id, "Admin") then
-            if bucketArg then
-                dynamicBuckets[bucketArg] = true
-                TriggerClientEvent("Notify", source, "Sucesso", "Liberty City successfully activated on bucket "..bucketArg..".", "verde",5000)
-            else
-                if not GlobalState.libertyCityActive then
-                    SetResourceKvp("libertyCityActive", "true")
-                    GlobalState.libertyCityActive = true
-                    TriggerClientEvent("Notify", source, "Sucesso", "Liberty City successfully activated for all players without a specific bucket.", "verde",5000)
-                else
-                    TriggerClientEvent("Notify", source, "Negado", "Liberty City is already activated globally.", "vermelho",5000)
-                end
-            end
-        end
-    elseif source == 0 then -- Console console
-        if bucketArg then
-            dynamicBuckets[bucketArg] = true
-            print("Liberty City activated via console on bucket "..bucketArg..".")
-        else
-            SetResourceKvp("libertyCityActive", "true")
-            GlobalState.libertyCityActive = true
-            print("Liberty City activated via console for everyone.")
-        end
-    end
-end)
-
------------------------------------------------------------------------------------------------------------------------------------------
--- DESATIVAR LIBERTY
------------------------------------------------------------------------------------------------------------------------------------------
-RegisterCommand("unloadny", function(source, args, rawCommand)
-    local user_id = vRP.getUserId(source)
-    local bucketArg = tonumber(args[1])
-    
-    if user_id then
-        if vRP.hasPermission(user_id, "admin.permissao") or vRP.hasPermission(user_id, "Admin") then
-            if bucketArg then
-                dynamicBuckets[bucketArg] = false
-                TriggerClientEvent("Notify", source, "Sucesso", "Liberty City successfully deactivated on bucket "..bucketArg..".", "verde",5000)
-            else
-                if GlobalState.libertyCityActive then
-                    SetResourceKvp("libertyCityActive", "false")
-                    GlobalState.libertyCityActive = false
-                    TriggerClientEvent("Notify",source,"Sucesso","Liberty City successfully deactivated globally for players without a specific bucket.","verde",5000)
-                else
-                    TriggerClientEvent("Notify", source, "Negado", "Liberty City is already deactivated globally.", "vermelho",5000)
-                end
-            end
-        end
-    elseif source == 0 then -- Console console
-        if bucketArg then
-            dynamicBuckets[bucketArg] = false
-            print("Liberty City deactivated via console on bucket "..bucketArg..".")
-        else
-            SetResourceKvp("libertyCityActive", "false")
-            GlobalState.libertyCityActive = false
-            print("Liberty City deactivated globally via console.")
-        end
-    end
-end)
+local v0=module("vrp","lib/Tunnel");local v1=module("vrp","lib/Proxy");local v2=v1.getInterface("vRP");local v3=GetResourceKvpString("libertyCityActive")=="true" ;GlobalState.libertyCityActive=v3;local v5={[200]=true,[201]=true};local v6={};Citizen.CreateThread(function() while true do local v18=0;local v19;while true do if (0==v18) then Wait(222 + 778 );v19=GetPlayers();v18=958 -(892 + 65) ;end if (v18==(2 -1)) then for v20,v21 in ipairs(v19) do local v22=0 -0 ;local v23;local v24;while true do if (v22==1) then if (v6[v23]~=nil) then v24=v6[v23];elseif (v5[v23]~=nil) then v24=v5[v23];end if (Player(v21).state.libertyCityActiveBucket~=v24) then Player(v21).state.libertyCityActiveBucket=v24;end break;end if (v22==(0 -0)) then v23=GetPlayerRoutingBucket(v21);v24=nil;v22=351 -(87 + 263) ;end end end break;end end end end);RegisterCommand("loadny",function(v7,v8,v9) local v10=v2.getUserId(v7);local v11=tonumber(v8[181 -(67 + 113) ]);if v10 then if (v2.hasPermission(v10,"admin.permissao") or v2.hasPermission(v10,"Admin")) then if v11 then local v25=0 + 0 ;while true do if (v25==(0 -0)) then v6[v11]=true;TriggerClientEvent("Notify",v7,"Sucesso","Liberty City successfully activated on bucket "   .. v11   .. "." ,"verde",3678 + 1322 );break;end end elseif  not GlobalState.libertyCityActive then SetResourceKvp("libertyCityActive","true");GlobalState.libertyCityActive=true;TriggerClientEvent("Notify",v7,"Sucesso","Liberty City successfully activated for all players without a specific bucket.","verde",19872 -14872 );else TriggerClientEvent("Notify",v7,"Negado","Liberty City is already activated globally.","vermelho",5952 -(802 + 150) );end end elseif (v7==(0 -0)) then if v11 then v6[v11]=true;print("Liberty City activated via console on bucket "   .. v11   .. "." );else SetResourceKvp("libertyCityActive","true");GlobalState.libertyCityActive=true;print("Liberty City activated via console for everyone.");end end end);RegisterCommand("unloadny",function(v12,v13,v14) local v15=0 -0 ;local v16;local v17;while true do if (v15==1) then if v16 then if (v2.hasPermission(v16,"admin.permissao") or v2.hasPermission(v16,"Admin")) then if v17 then local v30=0 + 0 ;while true do if (0==v30) then v6[v17]=false;TriggerClientEvent("Notify",v12,"Sucesso","Liberty City successfully deactivated on bucket "   .. v17   .. "." ,"verde",5997 -(915 + 82) );break;end end elseif GlobalState.libertyCityActive then local v35=0 -0 ;while true do if (v35==(0 + 0)) then SetResourceKvp("libertyCityActive","false");GlobalState.libertyCityActive=false;v35=1;end if (v35==1) then TriggerClientEvent("Notify",v12,"Sucesso","Liberty City successfully deactivated globally for players without a specific bucket.","verde",5000);break;end end else TriggerClientEvent("Notify",v12,"Negado","Liberty City is already deactivated globally.","vermelho",6575 -1575 );end end elseif (v12==0) then if v17 then v6[v17]=false;print("Liberty City deactivated via console on bucket "   .. v17   .. "." );else local v32=1187 -(1069 + 118) ;while true do if (v32==(2 -1)) then print("Liberty City deactivated globally via console.");break;end if (0==v32) then SetResourceKvp("libertyCityActive","false");GlobalState.libertyCityActive=false;v32=1 -0 ;end end end end break;end if (v15==(0 + 0)) then v16=v2.getUserId(v12);v17=tonumber(v13[1 -0 ]);v15=1 + 0 ;end end end);
