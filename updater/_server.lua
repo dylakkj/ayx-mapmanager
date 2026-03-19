@@ -9,7 +9,8 @@ local updateFiles = {
     "updater/_version.lua",
     "updater/_server.lua",
     "adapter/core.client.lua",
-    "adapter/listymaps.client.lua",
+    "adapter/core.server.lua",
+    "adapter/ymaps.client.lua",
     "adapter/roxwood.client.lua",
     "data/water/lossantos.xml"
 }
