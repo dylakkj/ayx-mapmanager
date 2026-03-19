@@ -103,65 +103,18 @@ function removeIslandIpl()
 end
 
 local changingToNorth = false
-local npcSpawnBlocked = true
-local lastNyActivation = 0
 
-local losSantosAreas = {
-    {2600.0, -4600.0, -10000.0, 8304.0, -2500.0, 10000.0},
-    {3000.0, -2500.0, -10000.0, 8300.0, -1700.0, 10000.0},
-    {3400.0, -1700.0, -10000.0, 8300.0, -900.0, 10000.0}
-}
+local loadedIslandIpls = {}
+local currentIslandYmaps = nil -- Começa nil até sabermos qual ilha
+local playerCircleZone = nil
 
-local northYanktonCayoPericoAreas = {
-    {2200.0, -5600.0, -10000.0, 4100.0, -4000.0, 10000.0},
-    {4100.0, -5600.0, -10000.0, 6500.0, -4600.0, 10000.0}
-}
-
-
-function BlockNpcsInArea(playerPed, areas, toggle)
-    if not toggle then return end
-    local playerCoords = GetEntityCoords(playerPed)
-    local isInside = false
-    
-    for _, area in ipairs(areas) do
-        local minX, minY, minZ, maxX, maxY, maxZ = area[1], area[2], area[3], area[4], area[5], area[6]
-        if minX > maxX then minX, maxX = maxX, minX end
-        if minY > maxY then minY, maxY = maxY, minY end
-        if minZ > maxZ then minZ, maxZ = maxZ, minZ end
-        
-        if playerCoords.x >= minX and playerCoords.x <= maxX and 
-           playerCoords.y >= minY and playerCoords.y <= maxY and 
-           playerCoords.z >= minZ and playerCoords.z <= maxZ then
-            isInside = true
-            break
-        end
-    end
-
-    if isInside then
-        SetPedDensityMultiplierThisFrame(0.0)
-        SetScenarioPedDensityMultiplierThisFrame(0.0, 0.0)
-        SetRandomVehicleDensityMultiplierThisFrame(0.0)
-        SetParkedVehicleDensityMultiplierThisFrame(0.0)
-        SetVehicleDensityMultiplierThisFrame(0.0)
-        ClearAreaOfPeds(playerCoords.x, playerCoords.y, playerCoords.z, 200.0, 1)
-        ClearAreaOfVehicles(playerCoords.x, playerCoords.y, playerCoords.z, 200.0, false, false, false, false, false)
-    end
+local function centerYmap(min, max)
+	return vector3(
+		(min.x + max.x) / 2,
+		(min.y + max.y) / 2,
+		(min.z + max.z) / 2
+	)
 end
-
-function NpcSpawnBlocker()
-    local playerPed = PlayerPedId()
-	BlockNpcsInArea(playerPed, losSantosAreas, true)
-	BlockNpcsInArea(playerPed, northYanktonCayoPericoAreas, true)
-end
-
-Citizen.CreateThread(function()
-    while true do
-        if npcSpawnBlocked then
-            NpcSpawnBlocker()
-        end
-        Wait(0)
-    end
-end)
 
 function onEnableNy(value)
 	if (changingToNorth) then
@@ -174,48 +127,41 @@ function onEnableNy(value)
 			Wait(0)
 		end
 	end)
+
 	if value then
-		
-		for _, ymap in pairs(losYMaps) do
-			onLeaveDisableIpl({ipl = ymap.name})
+		if currentIslandYmaps == losYMaps then
+			for _, ymap in pairs(losYMaps) do
+				if loadedIslandIpls[ymap.name] then
+					onLeaveDisableIpl({ipl = ymap.name})
+					loadedIslandIpls[ymap.name] = nil
+				end
+			end
 		end
-
-		for _, ymap in pairs(nyYmaps) do
-			onEnterEnableIpl({ipl = ymap.name})
-		end
-
-		--[[ SetWaterAreaClipRect(2200, -6300, 8200, -300) ]]
-		--[[ Wait(50) ]]
-		--[[ LoadWaterFromPath("mapmanager", "data/water/newyork.xml") ]]
-		--[[ Wait(300) ]]
-		--[[ SetTimecycleModifier("lightpolutionLC") ]]
+		currentIslandYmaps = nyYmaps
 
 		Citizen.CreateThread(function()
-            local currentSession = GetGameTimer()
-            lastNyActivation = currentSession
-            Citizen.Wait(10000) -- Waiting 10 seconds (delay) to re-enable NPCs
-            if lastNyActivation == currentSession then
-                npcSpawnBlocked = false
-            end
-        end)
-
+			SetWaterAreaClipRect(2200, -6300, 8200, -300)
+			LoadWaterFromPath("mapmanager", "data/water/newyork.xml")
+			Wait(1000)
+			SetTimecycleModifier("lightpolutionLC")
+		end)
 	else
-
-		for _, ymap in pairs(nyYmaps) do
-			onLeaveDisableIpl({ipl = ymap.name})
+		if currentIslandYmaps == nyYmaps then
+			for _, ymap in pairs(nyYmaps) do
+				if loadedIslandIpls[ymap.name] then
+					onLeaveDisableIpl({ipl = ymap.name})
+					loadedIslandIpls[ymap.name] = nil
+				end
+			end
 		end
+		currentIslandYmaps = losYMaps
 
-		for _, ymap in pairs(losYMaps) do
-			onEnterEnableIpl({ipl = ymap.name})
-		end
-
-		--[[ SetWaterAreaClipRect(-4000, -4000, 4500, 8000) ]]
-		--[[ Wait(50) ]]
-		--[[ LoadWaterFromPath("mapmanager", "data/water/water.xml") ]]
-		--[[ Wait(300) ]]
-		--[[ ClearTimecycleModifier() ]]
-
-		npcSpawnBlocked = true
+		Citizen.CreateThread(function()
+			SetWaterAreaClipRect(-4000, -4000, 4500, 8000)
+			LoadWaterFromPath("mapmanager", "data/water/water.xml")
+			Wait(1000)
+			ClearTimecycleModifier()
+		end)
 	end
 	changingToNorth = false
 end
@@ -242,75 +188,15 @@ Citizen.CreateThread(
 		NewyorkZone =
 			PolyZone:Create(
 			{
-				vector2(-2982.18, 135.59),
-				vector2(-3007.02, 115.6),
-				vector2(-4889.71, -1057.74),
-				vector2(-6881.21, -1865.12),
-				vector2(-8337.43, -1027.07),
-				vector2(-8792.73, 520.06),
-				vector2(-8930.03, 2655.22),
-				vector2(-8759.82, 4282.14),
-				vector2(-8351.9, 5157.47),
-				vector2(-7686.88, 5822.69),
-				vector2(-6437.55, 6047.85),
-				vector2(-5308.66, 5862.89),
-				vector2(-4079.26, 4749.6),
-				vector2(-3807.64, 4643.25),
-				vector2(-3540.56, 3547.93),
-				vector2(-2612.12, 2971.91),
-				vector2(-2594.86, 2968.77),
-				vector2(-2693.63, 2314.66),
-				vector2(-2722.66, 2255.14),
-				vector2(-2767.24, 2214.98),
-				vector2(-2822.46, 2183.21),
-				vector2(-2881.7, 2151.38),
-				vector2(-2926.54, 2119.26),
-				vector2(-2954.45, 2088.12),
-				vector2(-2970.41, 2046.55),
-				vector2(-2974.68, 1998.64),
-				vector2(-2988.09, 1956.93),
-				vector2(-3002.7, 1926.53),
-				vector2(-3018.43, 1891.61),
-				vector2(-3027.8, 1844.04),
-				vector2(-3028.03, 1767.46),
-				vector2(-3018.11, 1699.61),
-				vector2(-3000.16, 1648.45),
-				vector2(-2978.09, 1592.4),
-				vector2(-2967.4, 1545.01),
-				vector2(-2971.27, 1501.77),
-				vector2(-2990.24, 1461.83),
-				vector2(-3015.06, 1427.19),
-				vector2(-3048.43, 1382.39),
-				vector2(-3072.08, 1330.68),
-				vector2(-3085.54, 1264.64),
-				vector2(-3091.45, 1199.94),
-				vector2(-3096.35, 1139.13),
-				vector2(-3102.92, 1077.5),
-				vector2(-3114.36, 1034.13),
-				vector2(-3126.7, 1004.94),
-				vector2(-3139.84, 973.96),
-				vector2(-3143.61, 943.86),
-				vector2(-3140.93, 907.28),
-				vector2(-3125.89, 861.28),
-				vector2(-3093.94, 806.55),
-				vector2(-3055.02, 756.08),
-				vector2(-3029.02, 723.74),
-				vector2(-3010.12, 692.43),
-				vector2(-2998.42, 659.73),
-				vector2(-2988.88, 623.23),
-				vector2(-2980.13, 580.38),
-				vector2(-2975.7, 548.45),
-				vector2(-2973.18, 514.81),
-				vector2(-2973.28, 475.09),
-				vector2(-2978.76, 398.61),
-				vector2(-2984.33, 359.01),
-				vector2(-2992.66, 322.25),
-				vector2(-3003.66, 289.55),
-				vector2(-3012.85, 259.72),
-				vector2(-3016.52, 227.73),
-				vector2(-3015.34, 202.8),
-				vector2(-3009.81, 175.48),
-				vector2(-2995.89, 150.64)
+				vector2(2911.42, -2342.62),
+				vector2(3543.94, -943.54),
+				vector2(4979.17, 882.44),
+				vector2(7549.67, 3435.77),
+				vector2(15990.67, 2348.5),
+				vector2(14240.77, -1329.38),
+				vector2(13550.05, -7836.61),
+				vector2(2540.8, -5754.53),
+				vector2(1897.87, -4251.51)
 			},
 			{
 				name = k,
@@ -347,7 +233,7 @@ CreateThread(
 )
 
 function IsIplLod(ipl)
-	local patterns = { "_strm", "amb", "rox", "_grass", "ch1", "ch2", "ch3", "hei_", "lod", "lights", "cs2",  "occl", --[[ "mlo", "ipl", "int" ]]}
+	local patterns = { "_strm", "amb", "rox", "_grass", "ch1", "ch2", "ch3", "hei_", "lod", "lights", "cs2",  "occl", "mlo", "ipl", "int" }
 
 	local lowerIpl = ipl:lower()
 
@@ -380,6 +266,17 @@ end
 
 local alreadyHaveAThread = false
 
+local lastDeactivatedYmap = "Nenhum"
+local debugRemoveYmap = false
+
+RegisterCommand('debugremoveymap', function()
+	debugRemoveYmap = not debugRemoveYmap
+	if debugRemoveYmap then
+		print("^2[DEBUG YMAP] ^7Debug de YMAPs desativados ON. Ultimo desativado: ^3" .. lastDeactivatedYmap)
+	else
+		print("^1[DEBUG YMAP] ^7Debug de YMAPs desativados OFF.")
+	end
+end)
 
 function NorthPolyzoneStart()
 
@@ -393,12 +290,69 @@ function NorthPolyzoneStart()
 			onEnterEnableIpl({ipl = ymap.name})
 		end
 
+		local currentRadius = 700.0
+		playerCircleZone = CircleZone:Create(vector3(0.0, 0.0, 0.0), currentRadius, {
+			name="playerYmapZone",
+			useZ=false,
+			debugPoly=false
+		})
+
+		-- Set initial state for currentIslandYmaps
+		currentIslandYmaps = losYMaps
+
 		while true do
-			Wait(1000)
+			Wait(200)
+			
+			local ped = PlayerPedId()
+			local pos = GetEntityCoords(ped)
+			
+			-- Define o tamanho do raio dependendo de qual mapa estamos
+			if currentIslandYmaps == nyYmaps then
+				currentRadius = 700.0 -- Tamanho para Liberty City
+			else
+				currentRadius = 400.0 -- Tamanho para Los Santos
+			end
+
+			if playerCircleZone then
+				playerCircleZone:setCenter(pos)
+				playerCircleZone:setRadius(currentRadius)
+			end
+
+			if currentIslandYmaps then
+				for _, ymap in pairs(currentIslandYmaps) do
+					if ymap.extends then
+						local center = centerYmap(ymap.extends[1], ymap.extends[2])
+						local isInside = playerCircleZone:isPointInside(center)
+						
+						if isInside then
+							if not loadedIslandIpls[ymap.name] then
+								onEnterEnableIpl({ipl = ymap.name})
+								loadedIslandIpls[ymap.name] = true
+							end
+						else
+							if loadedIslandIpls[ymap.name] then
+								onLeaveDisableIpl({ipl = ymap.name})
+								loadedIslandIpls[ymap.name] = nil
+								lastDeactivatedYmap = ymap.name
+								if debugRemoveYmap then
+									print("^1[DEBUG YMAP] ^7Desativou o YMAP por PolyZone: ^3" .. ymap.name)
+								end
+							end
+						end
+					else
+						-- Sem extends, carrega direto pra previnir
+						if not loadedIslandIpls[ymap.name] then
+							onEnterEnableIpl({ipl = ymap.name})
+							loadedIslandIpls[ymap.name] = true
+						end
+					end
+				end
+			end
+
 			if NewyorkZone == nil then
 				return
 			end
-			local inZone = NewyorkZone:isPointInside(GetEntityCoords(PlayerPedId()))
+			local inZone = NewyorkZone:isPointInside(pos)
 			
 			local isBucketActive = LocalPlayer.state.libertyCityActiveBucket
 			local isNearNy = false
@@ -417,14 +371,6 @@ end
 
 
 local debug = false
-
-local function centerYmap(min, max)
-	return vector3(
-		(min.x + max.x) / 2,
-		(min.y + max.y) / 2,
-		(min.z + max.z) / 2
-	)
-end
 
 local function radius(min, max)
 	return math.max(
@@ -514,75 +460,15 @@ Citizen.CreateThread(function ()
 	NewyorkZone =
 			PolyZone:Create(
 			{
-				vector2(-2982.18, 135.59),
-				vector2(-3007.02, 115.6),
-				vector2(-4889.71, -1057.74),
-				vector2(-6881.21, -1865.12),
-				vector2(-8337.43, -1027.07),
-				vector2(-8792.73, 520.06),
-				vector2(-8930.03, 2655.22),
-				vector2(-8759.82, 4282.14),
-				vector2(-8351.9, 5157.47),
-				vector2(-7686.88, 5822.69),
-				vector2(-6437.55, 6047.85),
-				vector2(-5308.66, 5862.89),
-				vector2(-4079.26, 4749.6),
-				vector2(-3807.64, 4643.25),
-				vector2(-3540.56, 3547.93),
-				vector2(-2612.12, 2971.91),
-				vector2(-2594.86, 2968.77),
-				vector2(-2693.63, 2314.66),
-				vector2(-2722.66, 2255.14),
-				vector2(-2767.24, 2214.98),
-				vector2(-2822.46, 2183.21),
-				vector2(-2881.7, 2151.38),
-				vector2(-2926.54, 2119.26),
-				vector2(-2954.45, 2088.12),
-				vector2(-2970.41, 2046.55),
-				vector2(-2974.68, 1998.64),
-				vector2(-2988.09, 1956.93),
-				vector2(-3002.7, 1926.53),
-				vector2(-3018.43, 1891.61),
-				vector2(-3027.8, 1844.04),
-				vector2(-3028.03, 1767.46),
-				vector2(-3018.11, 1699.61),
-				vector2(-3000.16, 1648.45),
-				vector2(-2978.09, 1592.4),
-				vector2(-2967.4, 1545.01),
-				vector2(-2971.27, 1501.77),
-				vector2(-2990.24, 1461.83),
-				vector2(-3015.06, 1427.19),
-				vector2(-3048.43, 1382.39),
-				vector2(-3072.08, 1330.68),
-				vector2(-3085.54, 1264.64),
-				vector2(-3091.45, 1199.94),
-				vector2(-3096.35, 1139.13),
-				vector2(-3102.92, 1077.5),
-				vector2(-3114.36, 1034.13),
-				vector2(-3126.7, 1004.94),
-				vector2(-3139.84, 973.96),
-				vector2(-3143.61, 943.86),
-				vector2(-3140.93, 907.28),
-				vector2(-3125.89, 861.28),
-				vector2(-3093.94, 806.55),
-				vector2(-3055.02, 756.08),
-				vector2(-3029.02, 723.74),
-				vector2(-3010.12, 692.43),
-				vector2(-2998.42, 659.73),
-				vector2(-2988.88, 623.23),
-				vector2(-2980.13, 580.38),
-				vector2(-2975.7, 548.45),
-				vector2(-2973.18, 514.81),
-				vector2(-2973.28, 475.09),
-				vector2(-2978.76, 398.61),
-				vector2(-2984.33, 359.01),
-				vector2(-2992.66, 322.25),
-				vector2(-3003.66, 289.55),
-				vector2(-3012.85, 259.72),
-				vector2(-3016.52, 227.73),
-				vector2(-3015.34, 202.8),
-				vector2(-3009.81, 175.48),
-				vector2(-2995.89, 150.64)
+				vector2(2911.42, -2342.62),
+				vector2(3543.94, -943.54),
+				vector2(4979.17, 882.44),
+				vector2(7549.67, 3435.77),
+				vector2(15990.67, 2348.5),
+				vector2(14240.77, -1329.38),
+				vector2(13550.05, -7836.61),
+				vector2(2540.8, -5754.53),
+				vector2(1897.87, -4251.51)
 			},
 			{
 				name = 'NewyorkZone',

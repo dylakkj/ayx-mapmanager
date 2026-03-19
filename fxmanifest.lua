@@ -1,33 +1,26 @@
 fx_version 'cerulean'
 game 'gta5'
 
-lua54 'yes'
-
-client_scripts {
-    '@PolyZone/client.lua',
-    '@PolyZone/BoxZone.lua',
-    '@PolyZone/EntityZone.lua',
-    '@PolyZone/CircleZone.lua',
-    '@PolyZone/ComboZone.lua',
-
-    'adapter/ymaps.client.lua',
-    'adapter/core.client.lua'
+files {
+  'data/water/*.xml',
+  'data/xml/*.xml'
 }
 
 server_scripts {
-    '@vrp/lib/utils.lua',
-    'adapter/core.server.lua',
-    "updater/_version.lua",
-    "updater/_server.lua"
+  '@vrp/lib/utils.lua',
+  "updater/_version.lua",
+  "updater/_server.lua",
+  'adapter/core.server.lua',
+  'adapter/startup.server.lua',
 }
 
-files {
-    'data/*.xml',
-    'data/**/*'
+client_scripts {
+  'adapter/ymaps.client.lua',
+  'adapter/core.client.lua',
+  '@PolyZone/client.lua',
+  '@PolyZone/BoxZone.lua',
+  '@PolyZone/CircleZone.lua',
+  '@PolyZone/ComboZone.lua'
 }
 
-escrow_ignore {
-    "updater/_version.lua",
-}
-
-use_experimental_fxv2_oal 'yes'
+data_file 'TIMECYCLEMOD_FILE' 'data/xml/timecycle_mods_lc.xml'

@@ -17,7 +17,8 @@ GlobalState.libertyCityActive = isLibertyActive
 -----------------------------------------------------------------------------------------------------------------------------------------
 local defaultBuckets = {
     [200] = true,
-    [201] = true
+    [201] = true,
+    [0] = false
 }
 
 local dynamicBuckets = {}
