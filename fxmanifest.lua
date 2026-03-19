@@ -10,12 +10,13 @@ client_scripts {
     '@PolyZone/CircleZone.lua',
     '@PolyZone/ComboZone.lua',
 
-    'adapter/listymaps.client.lua',
+    'adapter/ymaps.client.lua',
     'adapter/core.client.lua',
     'adapter/roxwood.client.lua'
 }
 
 server_scripts {
+    'adapter/core.server.lua',
     "updater/_version.lua",
     "updater/_server.lua"
 }
