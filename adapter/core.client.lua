@@ -347,7 +347,7 @@ CreateThread(
 )
 
 function IsIplLod(ipl)
-	local patterns = { "_strm", "amb", "rox", "_grass", "ch1", "ch2", "ch3", "hei_", "lod", "lights", "cs2",  "occl", "mlo", "ipl", "int"}
+	local patterns = { "_strm", "amb", "rox", "_grass", "ch1", "ch2", "ch3", "hei_", "lod", "lights", "cs2",  "occl", --[[ "mlo", "ipl", "int" ]]}
 
 	local lowerIpl = ipl:lower()
 
