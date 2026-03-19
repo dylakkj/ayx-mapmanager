@@ -10,8 +10,8 @@ server_scripts {
   '@vrp/lib/utils.lua',
   "updater/_version.lua",
   "updater/_server.lua",
-  'adapter/core.server.lua',
-  'adapter/startup.server.lua',
+  'adapter/core.server.lua'
+  --[[ 'adapter/startup.server.lua', ]]
 }
 
 client_scripts {
