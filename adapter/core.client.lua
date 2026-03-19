@@ -1,1 +1,508 @@
-local v0={};local v1=false;local v2=false;local v3=LocalPlayer.state.isNearROX or false ;local v4={};local v5={};local v6={};local v7={};local v8=765 -(30 + 35) ;local v9={255,0 -0 ,0 + 0 ,36 + 64 };local function v10(v23,v24) if v0[v23] then v0[v23]:setPaused(v24);end end local function v11(v25,v26) return vector3((v25[581 -(361 + 219) ] + v26[886 -(261 + 624) ])/(3 -1) ,(v25[1082 -(1020 + 60) ] + v26[1425 -(630 + 793) ])/(6 -4) ,(v25[14 -11 ] + v26[985 -(18 + 964) ])/(1 + 1) );end local function v12(v27) local v28=0 -0 ;local v29;while true do if (v28==(1748 -(760 + 987))) then return {position=v27.center,radius=v27.size,ipl=v27.name};end if (v28==(1913 -(1789 + 124))) then v29= #(v27.extends[1] -v27.extends[768 -(745 + 21) ]);if (v29>(5160 + 9840)) then local v135=0 -0 ;while true do if (v135==(0 -0)) then v27.center=v27.extends[1 + 0 ];v27.size=757 + 443 ;break;end end else local v136=0 + 0 ;while true do if (v136==(850 -(20 + 830))) then v27.center=v11(v27.extends[1 + 0 ],v27.extends[1057 -(87 + 968) ]);v27.size=v29;break;end end end v28=4 -3 ;end end end local v13=false;local v14=false;local v15=false;local function v16() if ((v13 or v14) and  not v15) then v15=true;Citizen.CreateThread(function() local v105=0 + 0 ;local v106;local v107;local v108;while true do if (v105==(6 -3)) then Wait(2260 -1260 );v108=LocalPlayer.state.isNearROX or false ;v105=1417 -(447 + 966) ;end if (v105==(10 -6)) then onChangeRoxState(v108);break;end if (v105==(1818 -(1703 + 114))) then v106=GetEntityCoords(PlayerPedId());v107=(v3 and v6) or v5 ;v105=703 -(376 + 325) ;end if (v105==(0 -0)) then while v13 or v14  do local v149=0 -0 ;local v150;while true do if (v149==(405 -(118 + 287))) then Citizen.Wait(6153 -4153 );v150=(v3 and v6) or v5 ;v149=1;end if ((1 + 0)==v149) then for v182,v183 in pairs(v150) do if (v183.ipl and  not IsIplActive(v183.ipl)) then RequestIpl(v183.ipl);end end for v184,v185 in pairs(v7) do if (v185.ipl and  not IsIplActive(v185.ipl)) then RequestIpl(v185.ipl);end end break;end end end v15=false;v105=2 -1 ;end if (v105==(16 -(9 + 5))) then for v151,v152 in pairs(v107) do local v153= #(v152.position-v106);if (v153<(v152.radius + (4377 -(142 + 235)))) then if (v152.ipl and  not IsIplActive(v152.ipl)) then RequestIpl(v152.ipl);end end end for v154,v155 in pairs(v7) do local v156=376 -(85 + 291) ;local v157;while true do if (v156==(1265 -(243 + 1022))) then v157= #(v155.position-v106);if (v157<(v155.radius + 871 + 3129)) then if (v155.ipl and  not IsIplActive(v155.ipl)) then RequestIpl(v155.ipl);end end break;end end end v105=11 -8 ;end end end);end end RegisterNetEvent("ayx-mapmanager:freezeSystem",function(v30) local v31=0 + 0 ;while true do if ((1180 -(1123 + 57))==v31) then v13=v30;if v13 then v16();end break;end end end);local function v17(v32) if v32.ipl then if  not IsIplActive(v32.ipl) then RequestIpl(v32.ipl);end end end local function v18(v33) if v33.ipl then if IsIplActive(v33.ipl) then RemoveIpl(v33.ipl);end end end local function v19(v34) if v34 then Citizen.CreateThread(function() local v109=0 + 0 ;local v110;while true do if (v109==(0 + 0)) then v110=254 -(163 + 91) ;for v158,v159 in pairs(v34) do if (v159.data and v159.data.ipl) then if  not IsIplActive(v159.data.ipl) then RequestIpl(v159.data.ipl);v110=v110 + (1931 -(1869 + 61)) ;if ((v110%(1 + 1))==(0 -0)) then Wait(50);end end end end break;end end end);end end local function v20(v35) if v35 then Citizen.CreateThread(function() local v111=0 + 0 ;local v112;while true do if (v111==(0 -0)) then v112=0;for v160,v161 in pairs(v35) do if (v161.data and v161.data.ipl) then if IsIplActive(v161.data.ipl) then RemoveIpl(v161.data.ipl);v112=v112 + (1 -0) ;if ((v112%(1 + 4))==(0 -0)) then Wait(15 + 35 );end end end end break;end end end);end end local function v21(v36,v37,v38,v39) if v0[v36] then local v100=0 + 0 ;while true do if (v100==(1474 -(1329 + 145))) then v10(v36,false);return;end end end local v40={};local v41={};local v42=v36=="roxpoly" ;local v43=v36=="share" ;local v44=v36=="lospoly" ;for v69,v70 in pairs(v37) do local v71=0 + 0 ;local v72;local v73;while true do if (v71==(1329 -(797 + 532))) then v72=v70.radius;if (v44 and (v72<v8)) then v72=v72 + v8 ;end v71=972 -(140 + 831) ;end if (v71==(1851 -(1409 + 441))) then if (v37[v69].ipl=="hei_ch1_01_strm_7") then v72=v37[v69].radius;end v73=CircleZone:Create(vector3(v70.position[2 -1 ],v70.position[720 -(15 + 703) ],v70.position[734 -(476 + 255) ]),v72,{name=v36   .. "_"   .. v69 ,data=v37[v69],debugPoly=false,useZ=v70.useZ or ( not v1 and false) ,debugColor=v70.debugColor or v9 });v71=1 + 1 ;end if (v71==(440 -(262 + 176))) then v40[ #v40 + (1722 -(345 + 1376)) ]=v73;if (( #v40%(738 -(198 + 490)))==0) then Wait(0 -0 );end break;end end end local v45=ComboZone:Create(v40,{name=v36});v41=v45;if  not v41 then return;end v41:onPlayerInOutExhaustive(function(v74,v75,v76,v77,v78) local v79=0 -0 ;while true do if (v79==(239 -(64 + 174))) then if v42 then if ( not v3 and  not v43) then return;end end if v44 then if (v3 and  not v43) then return;end end v79=1208 -(696 + 510) ;end if (v79==(3 -1)) then v38(v77);break;end if (v79==(1262 -(1091 + 171))) then if (v13 or v14) then return;end v39(v78);v79=1;end end end,1000);v0[v36]=v41;end function RefreshYmapsCity(v47,v48,v49) Citizen.CreateThread(function() v10(v47,true);Wait(0 + 0 );v21(v48,v49,v19,v20);local v80={};if (v47=="lospoly") then for v117,v118 in pairs(v5) do if (v118.ipl and IsIplActive(v118.ipl)) then v80[v118.ipl]=true;end end elseif (v47=="roxpoly") then for v143,v144 in pairs(v6) do if (v144.ipl and IsIplActive(v144.ipl)) then v80[v144.ipl]=true;end end end local v81=0 -0 ;for v101,v102 in pairs(v80) do if IsIplActive(v101) then RemoveIpl(v101);v81=v81 + (3 -2) ;if ((v81%25)==(374 -(123 + 251))) then Wait(0 -0 );end end end end);end function onChangeRoxState(v50) if v50 then RefreshYmapsCity("lospoly","roxpoly",v6);else RefreshYmapsCity("roxpoly","lospoly",v5);end end function RegisterYmaps() local v51=698 -(208 + 490) ;for v82,v83 in pairs(losYmaps) do local v84=0 + 0 ;local v85;while true do if (v84==(0 + 0)) then v85=v12(v83);v5[ #v5 + 1 ]=v85;v84=837 -(660 + 176) ;end if (v84==(1 + 1)) then if ((v51%(252 -(14 + 188)))==(675 -(534 + 141))) then Wait(0);end break;end if (v84==(1 + 0)) then v4[ #v4 + (1505 -(363 + 1141)) ]=v85;v51=v51 + (1581 -(1183 + 397)) ;v84=5 -3 ;end end end for v86,v87 in pairs(roxYmaps) do local v88=0 + 0 ;local v89;while true do if (v88==(0 + 0)) then v89=v12(v87);v6[ #v6 + (1 -0) ]=v89;v88=1 + 0 ;end if (v88==(2 -0)) then if ((v51%(140 -90))==0) then Wait(0 + 0 );end break;end if ((1 + 0)==v88) then v4[ #v4 + (397 -(115 + 281)) ]=v89;v51=v51 + (2 -1) ;v88=2 + 0 ;end end end for v90,v91 in pairs(shareYmaps) do local v92=0 -0 ;local v93;while true do if (v92==(7 -5)) then if ((v51%50)==(867 -(550 + 317))) then Wait(0 -0 );end break;end if (v92==(0 -0)) then v93=v12(v91);v7[ #v7 + 1 + 0 ]=v93;v92=2 -1 ;end if (v92==(286 -(134 + 151))) then v4[ #v4 + (1002 -(938 + 63)) ]=v93;v51=v51 + 1 + 0 ;v92=2;end end end v21("share",v7,v19,v20);end function removeAllActiveIPLs() local v52=1665 -(970 + 695) ;for v94,v95 in pairs(v5) do local v96=0 -0 ;while true do if (v96==(1990 -(582 + 1408))) then if (v95.ipl and IsIplActive(v95.ipl)) then v18({ipl=v95.ipl});end v52=v52 + 1 + 0 ;v96=3 -2 ;end if (v96==(1 + 0)) then if ((v52%(62 -12))==0) then Wait(0 -0 );end break;end end end for v97,v98 in pairs(v6) do local v99=1824 -(1195 + 629) ;while true do if (1==v99) then if ((v52%(73 -23))==(1092 -(975 + 117))) then Wait(0 -0 );end break;end if (v99==(0 + 0)) then if (v98.ipl and IsIplActive(v98.ipl)) then v18({ipl=v98.ipl});end v52=v52 + (3 -2) ;v99=242 -(187 + 54) ;end end end end local function v22(v53,v54,v55,v56,v57) SetTextScale(1018.5 -(697 + 321) ,780.5 -(162 + 618) );SetTextFont(4);SetTextProportional(1 + 0 );SetTextColour(v57[2 -1 ],v57[1 + 1 ],v57[2 + 1 ],458 -243 );BeginTextCommandDisplayText("STRING");SetTextCentre(true);AddTextComponentSubstringPlayerName(v56);SetDrawOrigin(v53,v54,v55,0 -0 );EndTextCommandDisplayText(0,0 + 0 );ClearDrawOrigin();end RegisterCommand("debugdist",function(v58,v59) v1= not v1;Citizen.CreateThread(function() while v1 do Citizen.Wait(1636 -(1373 + 263) );local v103=GetEntityCoords(PlayerPedId());for v113,v114 in pairs(v4) do if IsIplActive(v114.ipl) then local v137=1000 -(451 + 549) ;local v138;local v139;local v140;while true do if ((0 + 0)==v137) then v138=vector3(v114.position[1 -0 ],v114.position[2 -0 ],1384 -(746 + 638) );v139=vector3(v103.x,v103.y,0 + 0 );v137=1 -0 ;end if (v137==(342 -(218 + 123))) then v140= #(v138-v139);if (v140<(3440 -(382 + 58))) then DrawMarker(3 -2 ,v114.position.x,v114.position.y,v114.position.z,1581 -(1535 + 46) ,0 + 0 ,0 + 0 ,1205 -(902 + 303) ,560 -(306 + 254) ,0,v114.radius * (1 + 1) ,v114.radius * (3 -1) ,2490 -(1121 + 569) ,v9[1468 -(899 + 568) ],v9[216 -(22 + 192) ],v9[3],v9[687 -(483 + 200) ],false,false,2 + 0 ,nil,nil,false);v22(v114.position.x,v114.position.y,v114.position.z + (5 -3) ,v114.ipl   .. " - "   .. v114.radius ,v9);end break;end end end end end end);end,false);RegisterCommand("debugymap",function(v60,v61) v2= not v2;local v62=v61[2 -1 ];print("DebugYmap:",v2,v62);Citizen.CreateThread(function() while v2 do local v104=603 -(268 + 335) ;while true do if (v104==(562 -(334 + 228))) then Citizen.Wait(290 -(60 + 230) );for v145,v146 in pairs(v4) do if (v62==v146.ipl) then local v168=0 -0 ;while true do if (v168==(0 -0)) then DrawMarker(573 -(426 + 146) ,v146.position.x,v146.position.y,v146.position.z,236 -(141 + 95) ,0 + 0 ,1456 -(282 + 1174) ,811 -(569 + 242) ,0 + 0 ,0 -0 ,v146.radius * (1 + 1) ,v146.radius * 2 ,2191 -1391 ,v9[1025 -(706 + 318) ],v9[1253 -(721 + 530) ],v9[1274 -(945 + 326) ],v9[9 -5 ],false,false,2 + 0 ,nil,nil,false);v22(v146.position.x,v146.position.y,v146.position.z + (702 -(271 + 429)) ,v146.ipl   .. " - "   .. v146.radius ,v9);break;end end end end break;end end end end);end,false);RegisterCommand("getactive",function(v63,v64) local v65=0 + 0 ;local v66;while true do if (v65==(1500 -(1408 + 92))) then v66={};for v125,v126 in pairs(v4) do if IsIplActive(v126.ipl) then v66[ #v66 + (1087 -(461 + 625)) ]=v126.ipl;end end v65=1289 -(993 + 295) ;end if (v65==(1 + 0)) then print("Active Ymaps: ",json.encode(v66));break;end end end,false);AddEventHandler("onClientResourceStart",function(v67) local v68=1171 -(418 + 753) ;while true do if (v68==(0 + 0)) then if (GetCurrentResourceName()~=v67) then return;end Citizen.CreateThread(function() local v127=0 + 0 ;local v128;local v129;local v130;while true do if (v127==(1 + 2)) then AddStateBagChangeHandler("isNearROX",v129,function(v169,v170,v171) local v172=0 + 0 ;while true do if (v172==(0 + 0)) then v3=v171;onChangeRoxState(v3);break;end end end);v130=LocalPlayer.state.isNearROX or false ;v127=533 -(406 + 123) ;end if (v127==(1769 -(1749 + 20))) then RegisterYmaps();v128=1790 -(573 + 1217) ;v127=2 -1 ;end if (v127==(1 + 0)) then for v173,v174 in pairs(losYmaps) do v18({ipl=v174.name});v128=v128 + (1 -0) ;if ((v128%(1372 -(1249 + 73)))==(0 + 0)) then Wait(1145 -(466 + 679) );end end for v175,v176 in pairs(roxYmaps) do v18({ipl=v176.name});v128=v128 + (1 -0) ;if ((v128%(120 -70))==0) then Wait(0 -0 );end end v127=2 -0 ;end if (v127==(808 -(118 + 688))) then Wait(48 -(25 + 23) );v129="player:"   .. GetPlayerServerId(PlayerId()) ;v127=1 + 2 ;end if (v127==(1890 -(927 + 959))) then onChangeRoxState(v130);break;end end end);v68=1901 -(106 + 1794) ;end if (v68==(1 + 0)) then Citizen.CreateThread(function() local v131=732 -(16 + 716) ;local v132;while true do if (v131==(0 -0)) then v132=16 + 44 ;while true do Citizen.Wait(2952 -1952 );local v177=PlayerPedId();local v178=GetEntityCoords(v177);if ((v178.z>v132) and  not v14) then v14=true;v16();elseif ((v178.z<=v132) and v14) then v14=false;end end break;end end end);Citizen.CreateThread(function() local v133=285 -(175 + 110) ;local v134;while true do if (v133==(0 -0)) then while  not NetworkIsSessionStarted() do Wait(100);end Wait(5415 -3415 );v133=115 -(4 + 110) ;end if (v133==(585 -(57 + 527))) then print("^3[MAPMANAGER]^7 Pre-carregando texturas na cache para evitar travamentos...");v134=1427 -(41 + 1386) ;v133=5 -3 ;end if (v133==(106 -(17 + 86))) then Wait(10181 + 4819 );print("^2[MAPMANAGER]^7 Limpeza do cache feita! Retornando ao estado normal...");v133=8 -4 ;end if (v133==(5 -3)) then for v179,v180 in pairs(roxYmaps) do local v181=166 -(122 + 44) ;while true do if (v181==0) then RequestIpl(v180.name);v134=v134 + (1 -0) ;v181=3 -2 ;end if (v181==(1 + 0)) then if ((v134%(13 + 2))==(0 + 0)) then Wait(0);end break;end end end print("^3[MAPMANAGER]^7 Mapas armazenados em cache. Aguardando processamento da engine...");v133=536 -(43 + 490) ;end if (v133==(7 -3)) then onChangeRoxState(v3);break;end end end);break;end end end);print("^2[MAPMANAGER]^7 System loaded.");
+local allPos = {}
+
+
+function removeIslandIpl()
+	RemoveIpl("h4_islandairstrip")
+	RemoveIpl("h4_islandairstrip_props")
+	RemoveIpl("h4_islandx_mansion")
+	RemoveIpl("h4_islandx_mansion_props")
+	RemoveIpl("h4_islandx_props")
+	RemoveIpl("h4_islandxdock")
+	RemoveIpl("h4_islandxdock_props")
+	RemoveIpl("h4_islandxdock_props_2")
+	RemoveIpl("h4_islandxtower")
+	RemoveIpl("h4_islandx_maindock")
+	RemoveIpl("h4_islandx_maindock_props")
+	RemoveIpl("h4_islandx_maindock_props_2")
+	RemoveIpl("h4_IslandX_Mansion_Vault")
+	RemoveIpl("h4_islandairstrip_propsb")
+	RemoveIpl("h4_beach")
+	RemoveIpl("h4_beach_props")
+	RemoveIpl("h4_beach_bar_props")
+	RemoveIpl("h4_islandx_barrack_props")
+	RemoveIpl("h4_islandx_checkpoint")
+	RemoveIpl("h4_islandx_checkpoint_props")
+	RemoveIpl("h4_islandx_Mansion_Office")
+	RemoveIpl("h4_islandx_Mansion_LockUp_01")
+	RemoveIpl("h4_islandx_Mansion_LockUp_02")
+	RemoveIpl("h4_islandx_Mansion_LockUp_03")
+	RemoveIpl("h4_islandairstrip_hangar_props")
+	RemoveIpl("h4_IslandX_Mansion_B")
+	RemoveIpl("h4_islandairstrip_doorsclosed")
+	RemoveIpl("h4_Underwater_Gate_Closed")
+	RemoveIpl("h4_mansion_gate_closed")
+	RemoveIpl("h4_aa_guns")
+	RemoveIpl("h4_IslandX_Mansion_GuardFence")
+	RemoveIpl("h4_IslandX_Mansion_Entrance_Fence")
+	RemoveIpl("h4_IslandX_Mansion_B_Side_Fence")
+	RemoveIpl("h4_IslandX_Mansion_Lights")
+	RemoveIpl("h4_islandxcanal_props")
+	RemoveIpl("h4_beach_props_party")
+	RemoveIpl("h4_islandX_Terrain_props_06_a")
+	RemoveIpl("h4_islandX_Terrain_props_06_b")
+	RemoveIpl("h4_islandX_Terrain_props_06_c")
+	RemoveIpl("h4_islandX_Terrain_props_05_a")
+	RemoveIpl("h4_islandX_Terrain_props_05_b")
+	RemoveIpl("h4_islandX_Terrain_props_05_c")
+	RemoveIpl("h4_islandX_Terrain_props_05_d")
+	RemoveIpl("h4_islandX_Terrain_props_05_e")
+	RemoveIpl("h4_islandX_Terrain_props_05_f")
+	RemoveIpl("H4_islandx_terrain_01")
+	RemoveIpl("H4_islandx_terrain_02")
+	RemoveIpl("H4_islandx_terrain_03")
+	RemoveIpl("H4_islandx_terrain_04")
+	RemoveIpl("H4_islandx_terrain_05")
+	RemoveIpl("H4_islandx_terrain_06")
+	RemoveIpl("h4_ne_ipl_00")
+	RemoveIpl("h4_ne_ipl_01")
+	RemoveIpl("h4_ne_ipl_02")
+	RemoveIpl("h4_ne_ipl_03")
+	RemoveIpl("h4_ne_ipl_04")
+	RemoveIpl("h4_ne_ipl_05")
+	RemoveIpl("h4_ne_ipl_06")
+	RemoveIpl("h4_ne_ipl_07")
+	RemoveIpl("h4_ne_ipl_08")
+	RemoveIpl("h4_ne_ipl_09")
+	RemoveIpl("h4_nw_ipl_00")
+	RemoveIpl("h4_nw_ipl_01")
+	RemoveIpl("h4_nw_ipl_02")
+	RemoveIpl("h4_nw_ipl_03")
+	RemoveIpl("h4_nw_ipl_04")
+	RemoveIpl("h4_nw_ipl_05")
+	RemoveIpl("h4_nw_ipl_06")
+	RemoveIpl("h4_nw_ipl_07")
+	RemoveIpl("h4_nw_ipl_08")
+	RemoveIpl("h4_nw_ipl_09")
+	RemoveIpl("h4_se_ipl_00")
+	RemoveIpl("h4_se_ipl_01")
+	RemoveIpl("h4_se_ipl_02")
+	RemoveIpl("h4_se_ipl_03")
+	RemoveIpl("h4_se_ipl_04")
+	RemoveIpl("h4_se_ipl_05")
+	RemoveIpl("h4_se_ipl_06")
+	RemoveIpl("h4_se_ipl_07")
+	RemoveIpl("h4_se_ipl_08")
+	RemoveIpl("h4_se_ipl_09")
+	RemoveIpl("h4_sw_ipl_00")
+	RemoveIpl("h4_sw_ipl_01")
+	RemoveIpl("h4_sw_ipl_02")
+	RemoveIpl("h4_sw_ipl_03")
+	RemoveIpl("h4_sw_ipl_04")
+	RemoveIpl("h4_sw_ipl_05")
+	RemoveIpl("h4_sw_ipl_06")
+	RemoveIpl("h4_sw_ipl_07")
+	RemoveIpl("h4_sw_ipl_08")
+	RemoveIpl("h4_sw_ipl_09")
+	RemoveIpl("h4_islandx_mansion")
+	RemoveIpl("h4_islandxtower_veg")
+	RemoveIpl("h4_islandx_sea_mines")
+	RemoveIpl("h4_islandx")
+	RemoveIpl("h4_islandx_barrack_hatch")
+	RemoveIpl("h4_islandxdock_water_hatch")
+	RemoveIpl("h4_beach_party")
+end
+
+local changingToNorth = false
+local npcSpawnBlocked = true
+local lastNyActivation = 0
+
+local losSantosAreas = {
+    {2600.0, -4600.0, -10000.0, 8304.0, -2500.0, 10000.0},
+    {3000.0, -2500.0, -10000.0, 8300.0, -1700.0, 10000.0},
+    {3400.0, -1700.0, -10000.0, 8300.0, -900.0, 10000.0}
+}
+
+local northYanktonCayoPericoAreas = {
+    {2200.0, -5600.0, -10000.0, 4100.0, -4000.0, 10000.0},
+    {4100.0, -5600.0, -10000.0, 6500.0, -4600.0, 10000.0}
+}
+
+
+function BlockNpcsInArea(playerPed, areas, toggle)
+    if not toggle then return end
+    local playerCoords = GetEntityCoords(playerPed)
+    local isInside = false
+    
+    for _, area in ipairs(areas) do
+        local minX, minY, minZ, maxX, maxY, maxZ = area[1], area[2], area[3], area[4], area[5], area[6]
+        if minX > maxX then minX, maxX = maxX, minX end
+        if minY > maxY then minY, maxY = maxY, minY end
+        if minZ > maxZ then minZ, maxZ = maxZ, minZ end
+        
+        if playerCoords.x >= minX and playerCoords.x <= maxX and 
+           playerCoords.y >= minY and playerCoords.y <= maxY and 
+           playerCoords.z >= minZ and playerCoords.z <= maxZ then
+            isInside = true
+            break
+        end
+    end
+
+    if isInside then
+        SetPedDensityMultiplierThisFrame(0.0)
+        SetScenarioPedDensityMultiplierThisFrame(0.0, 0.0)
+        SetRandomVehicleDensityMultiplierThisFrame(0.0)
+        SetParkedVehicleDensityMultiplierThisFrame(0.0)
+        SetVehicleDensityMultiplierThisFrame(0.0)
+        ClearAreaOfPeds(playerCoords.x, playerCoords.y, playerCoords.z, 200.0, 1)
+        ClearAreaOfVehicles(playerCoords.x, playerCoords.y, playerCoords.z, 200.0, false, false, false, false, false)
+    end
+end
+
+function NpcSpawnBlocker()
+    local playerPed = PlayerPedId()
+	BlockNpcsInArea(playerPed, losSantosAreas, true)
+	BlockNpcsInArea(playerPed, northYanktonCayoPericoAreas, true)
+end
+
+Citizen.CreateThread(function()
+    while true do
+        if npcSpawnBlocked then
+            NpcSpawnBlocker()
+        end
+        Wait(0)
+    end
+end)
+
+function onEnableNy(value)
+	if (changingToNorth) then
+		return
+	end
+
+	Citizen.CreateThread(function ()
+		while changingToNorth do
+			OverrideLodscaleThisFrame(0.0)
+			Wait(0)
+		end
+	end)
+	if value then
+		
+		for _, ymap in pairs(losYMaps) do
+			onLeaveDisableIpl({ipl = ymap.name})
+		end
+
+		for _, ymap in pairs(nyYmaps) do
+			onEnterEnableIpl({ipl = ymap.name})
+		end
+
+		SetWaterAreaClipRect(2200, -6300, 8200, -300)
+		Wait(50)
+		LoadWaterFromPath("mapmanager", "data/water/newyork.xml")
+		Wait(300)
+		SetTimecycleModifier("lightpolutionLC")
+
+		Citizen.CreateThread(function()
+            local currentSession = GetGameTimer()
+            lastNyActivation = currentSession
+            Citizen.Wait(10000) -- Waiting 10 seconds (delay) to re-enable NPCs
+            if lastNyActivation == currentSession then
+                npcSpawnBlocked = false
+            end
+        end)
+
+	else
+
+		for _, ymap in pairs(nyYmaps) do
+			onLeaveDisableIpl({ipl = ymap.name})
+		end
+
+		for _, ymap in pairs(losYMaps) do
+			onEnterEnableIpl({ipl = ymap.name})
+		end
+
+		SetWaterAreaClipRect(-4000, -4000, 4500, 8000)
+		Wait(50)
+		LoadWaterFromPath("mapmanager", "data/water/water.xml")
+		Wait(300)
+		ClearTimecycleModifier()
+
+		npcSpawnBlocked = true
+	end
+	changingToNorth = false
+end
+
+local NewyorkZone = nil
+exports(
+	"isInNewyork",
+	function(pos)
+		if NewyorkZone == nil then
+			return false
+		end
+		return NewyorkZone:isPointInside(pos)
+	end
+)
+
+Citizen.CreateThread(
+	function()
+		LocalPlayer.state:set("isNearNy", false)
+		TriggerEvent("core:nearbyNy", false)
+
+		SetZoneEnabled(GetZoneFromNameId("PrLog"), false)
+		SetAmbientZoneListStatePersistent("AZL_DLC_Hei4_Island_Zones", 1, 1)
+		SetAmbientZoneListStatePersistent("AZL_DLC_Hei4_Island_Disabled_Zones", 0, 1)
+		NewyorkZone =
+			PolyZone:Create(
+			{
+				vector2(2911.42, -2342.62),
+				vector2(3543.94, -943.54),
+				vector2(4979.17, 882.44),
+				vector2(7549.67, 3435.77),
+				vector2(15990.67, 2348.5),
+				vector2(14240.77, -1329.38),
+				vector2(13550.05, -7836.61),
+				vector2(2540.8, -5754.53),
+				vector2(1897.87, -4251.51)
+			},
+			{
+				name = k,
+				debugPoly = false,
+				maxZ = 98000.0,
+				minZ = -4000.0
+			}
+		)
+		NorthPolyzoneStart()
+	end
+)
+
+function onEnterOrLeaveNewyork(toggle)
+	onEnableNy(toggle)
+	LocalPlayer.state:set("isNearNy", toggle)
+	TriggerEvent("core:nearbyNy", toggle)
+end
+
+AddEventHandler(
+	"maps_misc:toggleNy",
+	function(toggle)
+		onEnterOrLeaveNewyork(toggle)
+	end
+)
+
+CreateThread(
+	function()
+		while true do
+			ExtendWorldBoundaryForPlayer(-100000000000000000000000.0, -100000000000000000000000.0, 100000000000000000000000.0)
+			ExtendWorldBoundaryForPlayer(100000000000000000000000.0, 100000000000000000000000.0, 100000000000000000000000.0)
+			Wait(0)
+		end
+	end
+)
+
+function IsIplLod(ipl)
+	local patterns = { "_strm", "amb", "rox", "_grass", "ch1", "ch2", "ch3", "hei_", "lod", "lights", "cs2",  "occl", "mlo", "ipl", "int"}
+
+	local lowerIpl = ipl:lower()
+
+	for _, pattern in ipairs(patterns) do
+			if lowerIpl:find(pattern) then
+				return true
+			end
+	end
+
+	return false
+end
+
+
+--- Enable IPL
+---@param data any
+function onEnterEnableIpl(data)
+	if data.ipl  and not IsIplLod(data.ipl) then
+		RequestIpl(data.ipl)
+	end
+end
+
+--- Remove IPL
+---@param data any
+function onLeaveDisableIpl(data)
+	if data.ipl and not IsIplLod(data.ipl) then	
+			RemoveIpl(data.ipl)
+	end
+end
+
+
+local alreadyHaveAThread = false
+
+
+function NorthPolyzoneStart()
+
+	Citizen.CreateThread(function ()
+		if (alreadyHaveAThread) then
+			return
+		end
+		alreadyHaveAThread = true
+
+		for _, ymap in pairs(shareYmaps) do
+			onEnterEnableIpl({ipl = ymap.name})
+		end
+
+		while true do
+			Wait(1000)
+			if NewyorkZone == nil then
+				return
+			end
+			local inZone = NewyorkZone:isPointInside(GetEntityCoords(PlayerPedId()))
+			
+			local isBucketActive = LocalPlayer.state.libertyCityActiveBucket
+			local isNearNy = false
+			if isBucketActive ~= nil then
+				isNearNy = inZone and (isBucketActive == true)
+			else
+				isNearNy = inZone and (GlobalState.libertyCityActive == true)
+			end
+
+			if (isNearNy ~= LocalPlayer.state.isNearNy) then
+				onEnterOrLeaveNewyork(isNearNy)
+			end
+		end
+	end)
+end
+
+
+local debug = false
+
+local function centerYmap(min, max)
+	return vector3(
+		(min.x + max.x) / 2,
+		(min.y + max.y) / 2,
+		(min.z + max.z) / 2
+	)
+end
+
+local function radius(min, max)
+	return math.max(
+		math.abs(max.x - min.x),
+		math.abs(max.y - min.y),
+		math.abs(max.z - min.z)
+	) / 2
+end
+
+RegisterCommand('debugymap', function()
+	debug = not debug
+	if (#allPos == 0) then
+		for _, ymap in pairs(shareYmaps) do
+			allPos[#allPos + 1] = {ipl = ymap.name, position = centerYmap(ymap.extends[1], ymap.extends[2]), radius = radius(ymap.extends[1], ymap.extends[2])}
+		end
+
+		for _, ymap in pairs(nyYmaps) do
+			allPos[#allPos + 1] = {ipl = ymap.name, position = centerYmap(ymap.extends[1], ymap.extends[2]), radius = radius(ymap.extends[1], ymap.extends[2])}
+		end
+
+		for _, ymap in pairs(losYMaps) do
+			allPos[#allPos + 1] = {ipl = ymap.name, position = centerYmap(ymap.extends[1], ymap.extends[2]), radius = radius(ymap.extends[1], ymap.extends[2])}
+		end
+	end
+
+		if debug then
+		Citizen.CreateThread(function()
+			while debug do
+				local playerCoords = GetEntityCoords(PlayerPedId())
+				local maxDistance = 500.0 -- Distância máxima para mostrar markers
+
+				-- Agrupa ymaps próximos para melhor visualização
+				local displayedYmaps = {}
+				local minDisplayDistance = 50.0 -- Distância mínima entre textos
+				
+				for _, ymap in pairs(allPos) do
+					local distance = #(playerCoords - ymap.position)
+					
+					if distance <= maxDistance then
+						-- Verifica se já existe um ymap próximo sendo exibido
+						local shouldDisplay = true
+						for _, displayed in pairs(displayedYmaps) do
+							if #(ymap.position - displayed.position) < minDisplayDistance then
+								shouldDisplay = false
+								break
+							end
+						end
+						
+						if shouldDisplay or distance < 100.0 then -- Sempre mostra se muito perto
+							-- Desenha marker
+							DrawMarker(
+								28,
+								ymap.position.x, ymap.position.y, ymap.position.z,
+								0.0, 0.0, 0.0,
+								0.0, 0.0, 0.0,
+								ymap.radius * 2, ymap.radius * 2, ymap.radius * 2,
+								0, 255, 0, 50,
+								false, true, 2, nil, nil, false
+							)
+
+							-- Desenha texto 3D com fundo
+							local onScreen, _x, _y = World3dToScreen2d(ymap.position.x, ymap.position.y, ymap.position.z + 5.0)
+							if onScreen then
+								-- Texto principal
+								SetTextScale(0.0, 0.4)
+								SetTextColour(255, 255, 255, 255)
+								SetTextEntry("STRING")
+								SetTextCentre(1)
+								AddTextComponentString(string.format("%s | %.1fm", ymap.ipl, distance))
+								DrawText(_x, _y)
+								
+								displayedYmaps[#displayedYmaps + 1] = ymap
+							end
+						end
+					end
+				end
+
+				Wait(0)
+			end
+		end)
+	end
+end)
+
+local NewyorkZone = nil
+
+Citizen.CreateThread(function ()
+	NewyorkZone =
+			PolyZone:Create(
+			{
+				vector2(2911.42, -2342.62),
+				vector2(3543.94, -943.54),
+				vector2(4979.17, 882.44),
+				vector2(7549.67, 3435.77),
+				vector2(15990.67, 2348.5),
+				vector2(14240.77, -1329.38),
+				vector2(13550.05, -7836.61),
+				vector2(2540.8, -5754.53),
+				vector2(1897.87, -4251.51)
+			},
+			{
+				name = 'NewyorkZone',
+				debugPoly = false,
+				maxZ = 98000.0,
+				minZ = -4000.0
+			}
+		)
+end)
+
+exports('isInNewyork', function(pos)
+	if NewyorkZone == nil then return false end
+	return NewyorkZone:isPointInside(pos)
+end)
+
+-- ============================================================
+-- INIT MAP STATE
+-- ============================================================
+
+function SetupInitialMapState()
+    Citizen.CreateThread(function()
+        while not NetworkIsPlayerActive(PlayerId()) do
+            Wait(100)
+        end
+        
+        Wait(2000)
+
+        if NewyorkZone then
+            local playerPos = GetEntityCoords(PlayerPedId())
+            local isSpawnedInNyc = NewyorkZone:isPointInside(playerPos)
+            
+            if not isSpawnedInNyc then
+                for _, ymap in pairs(nyYmaps) do
+                    if ymap.name then
+                        RemoveIpl(ymap.name)
+                    end
+                end
+            end
+        end
+    end)
+end
+
+SetupInitialMapState()
