@@ -1,6 +1,6 @@
 -- This file is updated automatically by the updater.
 local HypeUpdater = {}
 
-HypeUpdater.Version = "1.0.5"
+HypeUpdater.Version = "1.0.9"
 
 return HypeUpdater

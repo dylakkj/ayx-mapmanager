@@ -10,8 +10,11 @@ local updateFiles = {
     "updater/_server.lua",
     "adapter/core.client.lua",
     "adapter/core.server.lua",
+    "adapter/startup.server.lua",
     "adapter/ymaps.client.lua",
-    "data/water/lossantos.xml"
+    "data/water/newyork.xml",
+    "data/water/water.xml",
+    "data/xml/timecycle_mods_lc.xml"
 }
 
 local function checkVersion()
